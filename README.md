@@ -5,7 +5,7 @@
 
 ### Project description
 
-**BioinfoRmatics** is my first ever attempt to create teaching material for Bioinformatics with R, as part of the supervision of two R-newbies doing their master thesis in the field of pharmacogenomics (PGx). 
+**BioinfoRmatics** is my first ever attempt to create teaching material for Bioinformatics with R, as part of the supervision of two R-newbies starting their master thesis in the field of pharmacogenomics (PGx). 
 The main goal is to create a set of comprehensive – yet not entirely boring – slides, accompanied by hands-on examples that could be used to cover basic elements of programming with R.
 
 ### Outline
