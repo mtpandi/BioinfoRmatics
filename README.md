@@ -16,4 +16,4 @@ The main goal is to create a set of comprehensive â€“ yet not entirely boring â€
 
 
 ### Disclaimer!
-I am aware there is tons and tons of amazing material out there, yet here I am, making my own Introduction to R for Bioinformatics  :octocat:
+I am aware there is tons and tons of amazing material out there, yet here I am, making my own Introduction to R for Bioinformatics (that wouldn't have been possible without the existence of the beforementioned amazing material)  :octocat:
