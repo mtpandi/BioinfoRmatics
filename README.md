@@ -10,9 +10,10 @@ The main goal is to create a set of comprehensive â€“ yet not entirely boring â€
 
 ### Outline
 1.	Introduction to R 
-2.	Data handling and visualization (play with dplyr and ggplot2)
-3.	Supervised and Unsupervised Machine Learning (get an idea of caret and e1071)
-4.	PGx project with R
+2.	Basic Data handling and visualization 
+3.  Data handling and visualization with dplyr and ggplot2
+4.	Supervised and Unsupervised Machine Learning (get an idea of caret and e1071)
+5.	PGx project with R
 
 
 ### Disclaimer!
