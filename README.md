@@ -1,7 +1,7 @@
 # BioinfoRmatics
 
 ###### Maria-Theodora Pandi
-###### Bioinformarics PhD candidate
+###### Bioinformatics PhD candidate
 
 ### Project description
 
