@@ -1,4 +1,3 @@
-
 # load the data directly from R
 iris.data <- iris
 
@@ -70,7 +69,7 @@ rbind(iris.data, c(6.3, 2.1, 5.0, 2.6, 'virginica'))
 
 #remove rows
 iris.data[-1,]
-iris.data[-1:10,]
+iris.data[-c(1:10),]
 iris.data[-(row.names(iris.data)==1),] #by row name
 
 
@@ -103,8 +102,18 @@ iris.data[(iris.data$Species=='setosa')&(iris.data$Sepal.Length>5.5),
 
 #what if we need the mean numeric variables per column?
 
-#we can use a for loop 
+#we can use a for loop
 #mean per numeric column
+mean(iris.data$Sepal.Length)
+sum(iris.data$Sepal.Length)/nrow(iris.data)
+
+#apply it in all columns
+for(i in 1:4){
+  mean_val <- mean(iris.data[,i]) #mean sepal length
+  print(paste0(names(iris.data)[i], ' : ' ,mean_val))
+}
+
+#in a more algorithimc way:
 
 total <- 0  #initiallize to 0 a variable to store the sum
 for(i in 1:length(iris.data$Sepal.Length)){
@@ -116,8 +125,8 @@ print(paste0(names(iris.data)[1], ' : ' ,mean_val))
 
 for(n in 1:4){
   total <- 0  #initiallize to 0 a variable to store the sum
- 
-   for(i in 1:length(iris.data[,n])){
+  
+  for(i in 1:length(iris.data[,n])){
     total <- sum(total, iris.data[i,n])
   }
   mean_val <- total/length(iris.data[,n]) #mean sepal length
@@ -131,6 +140,7 @@ sums <- list()
 
 for(i in 1:nrow(iris.data)){
   sums[i] <- sum(iris.data[i, 1:4])
+  
 }
 
 sums <- unlist(sums)
@@ -146,14 +156,16 @@ iris.data$sums <- sums
 
 apply(iris.data[,1:4], 2, mean)  #named vector
 apply(iris.data[,1:4], 1, mean) #numeric vector
-
+iris.data$meanval <- apply(iris.data[,1:4], 1, mean)
 
 #lapply(X, FUN, …) : Applies a Function over a List or Vector and returns a list of values
-lapply(iris.data$Sepal.Length, sum)
-str(lapply(iris.data$Sepal.Length, sum))
-unlist(lapply(iris.data$Sepal.Length, sum), recursive = F)
+lapply(iris.data[,1:2], sum)
+str(lapply(iris.data[,1:2], sum))
+unlist(lapply(iris.data[,1:2], sum), recursive = F)
 
-unlist(list('a', 'nba', 987, list(6546,6496,35)))
+# observe the difference between recursive = T/F
+unlist(list('a', 'nba', 987, list(6546,6496,35)), recursive = T)
+unlist(list('a', 'nba', 987, list(6546,6496,35)), recursive = F)
 
 
 #sapply(X, FUN, …, simplify = TRUE, USE.NAMES = TRUE)
@@ -167,6 +179,9 @@ sapply(iris.data$Sepal.Length, sum)
 
 #organizes data according to a factor(Species) and applies a function in each group
 tapply(iris.data$Sepal.Length, iris.data$Species, min)
+
+
+#if you want to see a progress bar while applying a function, checkout pbapply library
 
 
 
@@ -193,7 +208,6 @@ anyNA(iris.na)
 
 #is it all NAs?
 
-
 #NAs per column
 sum(is.na(iris.na$Sepal.Length))
 
@@ -219,8 +233,17 @@ na.omit(iris.na)
 
 #3. Replace with column mean --- some say it is a "statistical malpractice" 
 for(i in 1:4){
-  iris.data[is.na(iris.na[,i]), i] <- mean(iris.data[,i], na.rm = TRUE)
+  iris.na[is.na(iris.na[,i]), i] <- mean(iris.na[,i], na.rm = TRUE)
 }
+
+# what does this for loop do?
+# for each column of iris.na dataframe, in the positions where this specific column
+# is NA, replace that value with the mean of that column 
+
+# the same applies for the following. We break the data frame in as many pieces as
+# the categories it has (3 in this case), and we apply the above code to each piece
+# and then we merge the data frames 
+
 
 #4. Replace with mean per group
 df1 <- iris.data[iris.data$Species=='setosa',]
@@ -238,6 +261,7 @@ rbind(df1, df2, df3)
 #5. Multiple Imputation (MICE, Amelia, missForest, Hmisc, mi)
 
 
+# interesting libraries to check out: naniar, janitor, DataExplorer
 
 
 # Basic Plotting  ----------------------------------------------------
@@ -270,11 +294,11 @@ barplot(tapply(iris.data$Sepal.Length, iris.data$Species, mean),
 
 toydata <- data.frame(Age = c(45, 73, 13, 98, 75, 46, 43, 63, 67, 32), 
                       FirstName = c('Ann', 'Mark', 'Mary', 'Lisa', 'Luke', 
-                                'Dan', 'John','Mer', 'Christina', 'Baily'), 
+                                    'Dan', 'John','Mer', 'Christina', 'Baily'), 
                       Sex = as.factor(c('Female', 'Male', 'Female', 'Female', 'Male', 'Male', 'Male',
-                              'Female', 'Female', 'Female')), 
+                                        'Female', 'Female', 'Female')), 
                       Smoking = as.factor(c('No', 'No', 'Yes', 'Yes', 'No', 
-                                        'Yes', 'No', 'Yes', 'Yes', 'No')))
+                                            'Yes', 'No', 'Yes', 'Yes', 'No')))
 
 barplot(table(toydata$Smoking, toydata$Sex),
         main = 'Smoking status per gender',
@@ -291,7 +315,7 @@ barplot(table(toydata$Smoking, toydata$Sex),
 
 pie(table(iris.data$Species), 
     labels = paste(names(table(iris.data$Species)), "\n", 
-                                             table(iris.data$Species), sep=""),
+                   table(iris.data$Species), sep=""),
     main="Pie Chart of Species\n (with sample sizes)") 
 
 
@@ -362,22 +386,22 @@ set.iris <- subset(iris.data,Species=="setosa",pch=1)
 ver.iris <- subset(iris.data,Species=="versicolor",pch=10)
 vir.iris <- subset(iris.data,Species=="virginica",pch=19)
 
-plot(Sepal.Length ~ Sepal.Width, iris) 
-  par(las=0)
-  points(Sepal.Length ~ Sepal.Width, subset(iris.data,Species=="setosa"),
-         pch=1, col="blue")
-  points(Sepal.Length ~ Sepal.Width, subset(iris.data,Species=="versicolor")
-         ,pch=10, col="orange")
-  points(Sepal.Length ~ Sepal.Width, subset(iris.data,Species=="virginica"),
-         pch=19, col="green")
-  abline(lm(Sepal.Length ~ Sepal.Width, set.iris),lty=1, col="blue")
-  abline(lm(Sepal.Length ~ Sepal.Width, ver.iris),lty=2, col="orange")
-  abline(lm(Sepal.Length ~ Sepal.Width, vir.iris),lty=3, col="green")
-  title(xlab="Sepal Width", ylab="Sepal Length", col.lab="yellow")
-  legend("topleft", cex=0.8, bty="n", 
-         title="Species", c("I. setosa","I. versicolor","I. virginica"), 
-         fill=c("blue", "orange","green"))
-  
+plot(Sepal.Length ~ Sepal.Width, iris.data) 
+par(las=0)
+points(Sepal.Length ~ Sepal.Width, subset(iris.data,Species=="setosa"),
+       pch=1, col="blue")
+points(Sepal.Length ~ Sepal.Width, subset(iris.data,Species=="versicolor")
+       ,pch=10, col="orange")
+points(Sepal.Length ~ Sepal.Width, subset(iris.data,Species=="virginica"),
+       pch=19, col="green")
+abline(lm(Sepal.Length ~ Sepal.Width, set.iris),lty=1, col="blue")
+abline(lm(Sepal.Length ~ Sepal.Width, ver.iris),lty=2, col="orange")
+abline(lm(Sepal.Length ~ Sepal.Width, vir.iris),lty=3, col="green")
+title(xlab="Sepal Width", ylab="Sepal Length", col.lab="yellow")
+legend("topleft", cex=0.8, bty="n", 
+       title="Species", c("I. setosa","I. versicolor","I. virginica"), 
+       fill=c("blue", "orange","green"))
+
 
 
 
@@ -414,5 +438,3 @@ boxplot(iris.data$Sepal.Length~iris.data$Species,
         xlab = "Species", ylab = "Sepal Length", 
         col = c("yellow","green3","blue"))
 dev.off()
-
-
